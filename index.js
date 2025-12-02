@@ -6,7 +6,7 @@ import UserRouter from './Routes/User.Route.js';
 
 const app = express();
 
-app.use(cors({ origin: '*', methods: ['GET', 'POST', 'DELETE'] }));
+app.use(cors({ origin: 'http://localhost:5173/', methods: ['GET', 'POST', 'DELETE'] }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
