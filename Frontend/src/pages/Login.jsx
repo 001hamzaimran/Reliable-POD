@@ -161,7 +161,7 @@ const Login = () => {
           </GradientButton>
 
           {/* Sign up link */}
-          <div className="text-center mt-6">
+          {/* <div className="text-center mt-6">
             <Typography variant="body2" className="text-gray-600">
               Don't have an account?{" "}
               <Link
@@ -174,7 +174,7 @@ const Login = () => {
                 Sign up now
               </Link>
             </Typography>
-          </div>
+          </div> */}
         </div>
       </StyledCard>
     </div>

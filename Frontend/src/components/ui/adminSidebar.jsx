@@ -1,18 +1,8 @@
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import {
-  LayoutDashboard,
-  Users,
-  Settings,
-  BarChart3,
-  Calendar,
-  FileText,
-  MessageSquare,
-  HelpCircle,
-  Bell,
-  CreditCard,
-  Shield,
-} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { LayoutDashboard, Settings, HelpCircle } from "lucide-react";
 export const AdminSidebar = () => {
+  const navigate = useNavigate();
   const sidebarStyles = {
     root: {
       height: "100vh",
@@ -33,6 +23,7 @@ export const AdminSidebar = () => {
         background: "#3b6d92 !important",
         color: "#fff",
         height: "100vh",
+        marginTop: "64px",
       }}
     >
       {/* Logo/Header */}
@@ -104,20 +95,23 @@ export const AdminSidebar = () => {
           },
         }}
       >
-        <MenuItem icon={<LayoutDashboard size={18} />}>Dashboard</MenuItem>
-        <MenuItem icon={<Users size={18} />}>Users</MenuItem>
-        <MenuItem icon={<BarChart3 size={18} />}>Analytics</MenuItem>
-        <SubMenu label="Content" icon={<FileText size={18} />}>
+        <MenuItem
+          onClick={() => navigate("/admin")}
+          icon={<LayoutDashboard size={18} />}
+        >
+          Dashboard
+        </MenuItem>
+        {/* <SubMenu label="Content" icon={<FileText size={18} />}>
           <MenuItem>Posts</MenuItem>
           <MenuItem>Pages</MenuItem>
           <MenuItem>Media</MenuItem>
-        </SubMenu>
-        <MenuItem icon={<CreditCard size={18} />}>Payments</MenuItem>
-        <MenuItem icon={<Calendar size={18} />}>Calendar</MenuItem>
-        <MenuItem icon={<MessageSquare size={18} />}>Messages</MenuItem>
-        <MenuItem icon={<Bell size={18} />}>Notifications</MenuItem>
-        <MenuItem icon={<Shield size={18} />}>Security</MenuItem>
-        <MenuItem icon={<Settings size={18} />}>Settings</MenuItem>
+        </SubMenu> */}
+        <MenuItem
+          onClick={() => navigate("/admin/settings")}
+          icon={<Settings size={18} />}
+        >
+          Settings
+        </MenuItem>
         <MenuItem icon={<HelpCircle size={18} />}>Help Center</MenuItem>
       </Menu>
     </Sidebar>

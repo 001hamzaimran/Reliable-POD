@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { colors } from "../theme/theme";
 import { GradientButton, StyledCard } from "../styles/globalStyle";
+import { Check } from "lucide-react";
 
 const Register = () => {
   const [formData, setFormData] = useState({
