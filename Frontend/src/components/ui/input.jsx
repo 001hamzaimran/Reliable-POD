@@ -1,131 +1,216 @@
-// components/ui/Input.jsx
-import React, { forwardRef } from "react";
+import { forwardRef, useState } from "react";
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  FormHelperText,
+  Box,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-export const Input = forwardRef(
+// Material UI Input component with all features
+const Input = forwardRef(
   (
     {
-      label,
-      type = "text",
-      value = "",
-      onChange,
-      placeholder,
       className = "",
+      type = "text",
+      label,
+      placeholder,
       error,
-      success,
+      helperText,
       disabled = false,
       required = false,
-      id,
-      name,
-      helperText,
-      autoComplete = "off",
+      icon: Icon,
+      isPassword = false,
+      fullWidth = true,
+      variant = "outlined",
+      size = "medium",
+      sx = {},
       ...props
     },
     ref
   ) => {
-    const inputId =
-      id || name || `input-${Math.random().toString(36).substr(2, 9)}`;
+    const [showPassword, setShowPassword] = useState(false);
 
-    // Status-based colors
-    const getBorderColor = () => {
-      if (error) return "border-red-500 focus:border-red-500";
-      if (success) return "border-green-500 focus:border-green-500";
-      return "border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200";
+    const handleClickShowPassword = () => {
+      setShowPassword(!showPassword);
     };
 
-    const getTextColor = () => {
-      if (error) return "text-red-500";
-      if (success) return "text-green-500";
-      return "text-neutral-800";
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
     };
 
-    const inputClasses = `
-      w-full px-4 py-3
-      bg-white border rounded-lg
-      placeholder:text-neutral-500
-      focus:outline-none focus:transition-all focus:duration-200
-      disabled:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-70
-      ${getBorderColor()}
-      ${className}
-    `;
-
-    const labelClasses = `
-      block text-sm font-medium mb-2
-      ${getTextColor()}
-      ${disabled ? "opacity-50" : ""}
-    `;
-
-    const helperTextClasses = `
-      text-sm mt-1
-      ${
-        error ? "text-red-600" : success ? "text-green-600" : "text-neutral-500"
-      }
-    `;
-
-    return (
-      <div className="w-full space-y-1">
-        {/* Label */}
-        {label && (
-          <label htmlFor={inputId} className={labelClasses}>
-            {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
-          </label>
-        )}
-
-        {/* Input Field */}
-        <div className="relative">
-          <input
-            ref={ref}
-            id={inputId}
-            name={name}
-            type={type}
-            value={value}
-            onChange={onChange}
+    // If it's a password field with toggle
+    if (isPassword) {
+      return (
+        <FormControl
+          fullWidth={fullWidth}
+          variant={variant}
+          error={!!error}
+          disabled={disabled}
+          sx={sx}
+          className={className}
+        >
+          <InputLabel required={required}>{label}</InputLabel>
+          <OutlinedInput
+            inputRef={ref}
+            type={showPassword ? "text" : "password"}
+            label={label}
             placeholder={placeholder}
             disabled={disabled}
             required={required}
-            autoComplete={autoComplete}
-            className={inputClasses}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={showPassword ? "hide password" : "show password"}
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                  size="small"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            startAdornment={
+              Icon && (
+                <InputAdornment position="start">
+                  <Icon sx={{ color: "action.active" }} />
+                </InputAdornment>
+              )
+            }
+            sx={{
+              borderRadius: "12px",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: error ? "error.main" : "grey.300",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: error ? "error.main" : "primary.main",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "primary.main",
+                borderWidth: "2px",
+              },
+            }}
             {...props}
           />
-        </div>
+          {(error || helperText) && (
+            <FormHelperText error={!!error}>
+              {error || helperText}
+            </FormHelperText>
+          )}
+        </FormControl>
+      );
+    }
 
-        {/* Helper Text & Error/Success Messages */}
-        {(error || success || helperText) && (
-          <div className="flex items-center gap-1.5">
-            {error && (
-              <svg
-                className="w-4 h-4 text-red-500 shrink-0"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            )}
-            {success && (
-              <svg
-                className="w-4 h-4 text-green-500 shrink-0"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            )}
-            <span className={helperTextClasses}>
-              {error || success || helperText}
-            </span>
-          </div>
-        )}
-      </div>
+    // Regular input field
+    return (
+      <TextField
+        inputRef={ref}
+        fullWidth={fullWidth}
+        label={label}
+        type={type}
+        placeholder={placeholder}
+        variant={variant}
+        size={size}
+        error={!!error}
+        helperText={error || helperText}
+        disabled={disabled}
+        required={required}
+        InputProps={{
+          startAdornment: Icon && (
+            <InputAdornment position="start">
+              <Icon sx={{ color: "action.active" }} />
+            </InputAdornment>
+          ),
+          sx: {
+            borderRadius: "12px",
+            "&.MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: error ? "error.main" : "grey.300",
+              },
+              "&:hover fieldset": {
+                borderColor: error ? "error.main" : "primary.main",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "primary.main",
+                borderWidth: "2px",
+              },
+            },
+          },
+        }}
+        sx={{
+          "& .MuiFormLabel-asterisk": {
+            color: "error.main",
+          },
+          ...sx,
+        }}
+        className={className}
+        {...props}
+      />
     );
   }
 );
 
 Input.displayName = "Input";
+
+export { Input };
+
+// Simplified version with only essential features
+export const SimpleInput = forwardRef(
+  (
+    {
+      label,
+      placeholder,
+      error,
+      helperText,
+      isPassword = false,
+      fullWidth = true,
+      ...props
+    },
+    ref
+  ) => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    return (
+      <TextField
+        inputRef={ref}
+        fullWidth={fullWidth}
+        label={label}
+        type={isPassword ? (showPassword ? "text" : "password") : "text"}
+        placeholder={placeholder}
+        variant="outlined"
+        error={!!error}
+        helperText={error || helperText}
+        itemProp={
+          isPassword
+            ? {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                      size="small"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }
+            : undefined
+        }
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "12px",
+          },
+        }}
+        {...props}
+      />
+    );
+  }
+);
+
+SimpleInput.displayName = "SimpleInput";

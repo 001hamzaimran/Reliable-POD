@@ -4,6 +4,7 @@ import { UserLayout } from "../layouts/UserLayout";
 import AdminDashboard from "../pages/admin/Dashboard";
 import UserDashboard from "../pages/user/Dashboard";
 import Login from "../pages/Login";
+import Register from "../pages/Register";
 import { useAuth } from "../context/AuthContext";
 
 const AppRoutes = () => {
@@ -21,6 +22,7 @@ const AppRoutes = () => {
     <Routes>
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Register />} />
 
       {/* User Routes */}
       <Route
